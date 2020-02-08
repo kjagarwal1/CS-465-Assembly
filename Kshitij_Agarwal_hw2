@@ -1,0 +1,94 @@
+.data
+input: .space 40
+newline: .asciiz "\n"
+
+.text
+main:
+    li $v0, 8	
+    li $a1, 40
+    la $a0, input
+
+    #next position to fix
+    li $s0, 10
+    #front of string
+    li $t0, 0
+    
+    
+    lb $t3, input($t0)
+    add $t0, $t0, 5
+    lb $t4, input($t0)
+    sub $t0, $t0, 5
+
+start:
+    #front of temp seq
+    add $t1, $t0, 0
+    #front of main seq
+    #add $s1, $s0, 0
+    sub $s1, $s0, 4
+    beq $t1, $s1, next
+    nop
+    
+check:
+    #check first number of both seq
+    lb $t2, input($t1)
+    lb $s2, input($s1)
+    bne $t2, $s2, good
+    nop
+    add $t1, $t1, 1
+    add $s1, $s1, 1
+    
+    
+    #check second number of both seq
+    lb $t2, input($t1)
+    lb $s2, input($s1)
+    bne $t2, $s2, good
+    nop
+    add $t1, $t1, 1
+    add $s1, $s1, 1
+    
+    #check third number of both seq
+    lb $t2, input($t1)
+    lb $s2, input($s1)
+    bne $t2, $s2, good
+    nop
+    add $t1, $t1, 1
+    add $s1, $s1, 1
+    
+    #check fourth number of both seq
+    lb $t2, input($t1)
+    lb $s2, input($s1)
+    bne $t2, $s2, good
+    nop
+    add $t1, $t1, 1
+    
+    #check fifth number of temp seq with a "0"
+    lb $t2, input($t1)
+    lb $s2, input($s1)
+    bne $t2, $t3, good
+    nop
+    
+notGood:
+    sb $t4, input($s0)
+    
+    j end
+    nop
+    
+good:
+    add $t0, $t0, 1
+    j start
+    nop
+    
+next:
+    sb $t3, input($s0)
+
+end:
+    add $s0, $s0, 1
+    li $t0, 0
+    blt $s0, 0x20, start
+    nop
+    
+exit:    
+    li $v0, 4
+    la $a0, input
+
+    li $v0, 10
